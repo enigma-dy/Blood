@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default () => {
-  let url = "http://localhost:1801/user/viewFeedback";
+  let url = "https://medical-backend-7ua9.onrender.com/user/viewFeedback";
   const [campaign, setfeedback] = useState([]);
 
   useEffect(() => {
@@ -25,12 +25,16 @@ export default () => {
         style={{ marginBottom: "2%" }}
       >
         {campaign.map((item) => (
-          <div key={item._id} className="card shadow-lg " style={{ marginLeft: "2%", marginTop: "2%" }}>
+          <div
+            key={item._id}
+            className="card shadow-lg "
+            style={{ marginLeft: "2%", marginTop: "2%" }}
+          >
             <div className="card-body">
-              <h5 className="card-title">{item.userName} <p>{item.userRating} </p></h5>
-              <p className="card-text">
-                {item.userFeedback}
-              </p>
+              <h5 className="card-title">
+                {item.userName} <p>{item.userRating} </p>
+              </h5>
+              <p className="card-text">{item.userFeedback}</p>
             </div>
           </div>
         ))}

@@ -21,7 +21,7 @@ export default () => {
     setRegistration({ ...registration, [e.target.name]: e.target.value });
   };
 
-  let URL = "http://localhost:1801/user/addRegistration";
+  let URL = "https://medical-backend-7ua9.onrender.com/user/addRegistration";
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();

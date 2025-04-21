@@ -15,7 +15,7 @@ export default () => {
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
 
-  let URL = "http://localhost:1801/user/addContact";
+  let URL = "https://medical-backend-7ua9.onrender.com/user/addContact";
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
