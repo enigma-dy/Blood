@@ -21,7 +21,7 @@ export default () => {
     setFeedback({ ...feedback, [e.target.name]: e.target.value });
   };
 
-  let URL = "http://localhost:1801/donor/addFeedback";
+  let URL = "https://medical-backend-7ua9.onrender.com/donor/addFeedback";
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -32,14 +32,13 @@ export default () => {
     } catch (err) {
       console.log(err);
     }
-    
-  setFeedback({
-    userName: "",
-    userEmail: "",
-    userRating: "",
-    userQuery: "",
-  });
 
+    setFeedback({
+      userName: "",
+      userEmail: "",
+      userRating: "",
+      userQuery: "",
+    });
   };
   return (
     <>

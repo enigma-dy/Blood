@@ -12,10 +12,10 @@ const DeleteCampaignCard = () => {
     if (!token_data) {
       navigate("/adminLogin");
     }
-  }, [token_data, navigate]); // Added dependency array for better control
+  }, [token_data, navigate]);
 
   const [campaign, setCampaign] = useState([]);
-  const url = "http://localhost:1801/user/viewcampaign";
+  const url = "https://medical-backend-7ua9.onrender.com/user/viewcampaign";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,14 +28,14 @@ const DeleteCampaignCard = () => {
     };
 
     fetchData();
-  }, []); // This useEffect runs only once on component mount
+  }, []);
 
   const deleteData = async (e, id) => {
     e.preventDefault();
     if (window.confirm("Do you want to delete this campaign?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:1801/admin/deleteCampaign/${id}`
+          `https://medical-backend-7ua9.onrender.com/admin/deleteCampaign/${id}`
         );
 
         if (response.data.code === 200) {
@@ -55,30 +55,26 @@ const DeleteCampaignCard = () => {
     <>
       <AdminHeader />
       <div
-        className="d-flex items-align-center justify-content-center flex-wrap"
+        className="d-flex align-items-center justify-content-center flex-wrap"
         style={{ marginBottom: "2%" }}
       >
         {campaign.map((item) => (
           <div
             key={item._id}
             className="card shadow-lg"
-            style={{ marginLeft: "2%", marginTop: "2%" }}
+            style={{ marginLeft: "2%", marginTop: "2%", width: "300px" }}
           >
             <img
-              src={`http://localhost:1801/campaign/${item.userPic}`}
+              src={`https://medical-backend-7ua9.onrender.com/campaign/${item.userPic}`}
               className="card-img-top"
               alt="Campaign"
-              style={{ height: "300px" }}
+              style={{ height: "300px", objectFit: "cover" }}
             />
             <div className="card-body">
-              <h5 className="card-title">
-                {item.userOrganizer}
-                <p>
-                  -By {item.userName}
-                  <br />
-                  -on {item.userDate}
-                </p>
-              </h5>
+              <h5 className="card-title">{item.userOrganizer}</h5>
+              <p className="card-subtitle mb-2 text-muted">
+                By {item.userName} on {item.userDate}
+              </p>
               <p className="card-text">{item.userDiscription}</p>
               <button
                 className="btn btn-danger"

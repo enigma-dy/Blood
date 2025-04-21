@@ -12,7 +12,8 @@ export default () => {
   const dataFetch = (evt) => {
     setLogData({ ...logData, [evt.target.name]: evt.target.value });
   };
-  let URL = "http://localhost:1801/donor/dologin";
+  let URL =
+    "https://medical-backend-7ua9.onrender.comnd-7ua9.onrender.com/donor/dologin";
 
   const navigate = useNavigate();
 

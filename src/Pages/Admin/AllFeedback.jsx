@@ -17,13 +17,13 @@ export default function AllFeedback() {
 
   let [feedback, setFeedback] = useState([]);
 
-  const url = "http://localhost:1801/admin/showFeedback";
+  const url = "https://medical-backend-7ua9.onrender.com/admin/showFeedback";
 
   const deleteData = async (e, id) => {
     e.preventDefault();
     if (window.confirm("Do you want to delete")) {
       const isDelete = await axios.post(
-        `http://localhost:1801/admin/deleteFeedback/${id}`
+        `https://medical-backend-7ua9.onrender.com/admin/deleteFeedback/${id}`
       );
 
       if (isDelete.data.code == 200) {
