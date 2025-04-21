@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+  text-shadow: rgba(0, 0, 0, .01) 0 0 1px
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: 400;
+  background: #fafafa;
+  color: #000000
+}
+
+.carousel,
+.carousel-inner,
+.carousel-item {
+  height: 500px;
+  box-shadow: rgba(1, 1, 1, 1) 0 0 1px;
+}
+
+li {
+  list-style: none;
+  margin: 0 12px;
+}
+
+li a {
+  position: relative;
+  color: #333;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+a:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #ef3447;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+}
+
+a:hover:before {
+  width: 100%;
+}
+
+.nav-link li.forward a:before {
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease;
+}
+
+.nav-link li.forward a:hover:before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.card {
+  width: 18rem;
+}
+
+.foot {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.fom{
+  width: 75%;
+}
+.shd{
+  box-shadow: 6px -6px 10px 1px  #ef3447;
+}
+.wtd{
+  width:80%
+}
