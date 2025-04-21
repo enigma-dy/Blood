@@ -9,8 +9,6 @@ export default () => {
   let [donor, setdonor] = useState([]);
 
   const url = "http://localhost:1801/admin/showDonor";
- 
-
   useEffect(() => {
     const fetchedData = async () => {
       try {
@@ -65,4 +63,3 @@ export default () => {
     </>
   );
 };
-    
