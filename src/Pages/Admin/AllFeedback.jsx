@@ -2,19 +2,20 @@ import axios from "axios";
 import React from "react";
 import AdminHeader from "./AdminHeader";
 import { useState, useEffect } from "react";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-export default AllFeedback = () => {
+export default function AllFeedback() {
   const navigate = useNavigate();
   const token_data = localStorage.getItem("TokenKey");
+
   useEffect(() => {
     if (!token_data) {
       navigate("/adminLogin");
     }
-  });
-  
-  let [feedback, setfeedback] = useState([]);
+  }, [token_data, navigate]);
+
+  let [feedback, setFeedback] = useState([]);
 
   const url = "http://localhost:1801/admin/showFeedback";
 
@@ -27,22 +28,23 @@ export default AllFeedback = () => {
 
       if (isDelete.data.code == 200) {
         alert("Successfully Delete");
-        setfeedback(feedback.filter(item => item._id!==id))
+        setFeedback(feedback.filter((item) => item._id !== id));
       }
     }
-  }
+  };
 
   useEffect(() => {
     const fetchedData = async () => {
       try {
         let response = await axios.get(url);
-        setfeedback(response.data);
+        setFeedback(response.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchedData();
   }, []);
+
   return (
     <>
       <AdminHeader />
@@ -50,14 +52,24 @@ export default AllFeedback = () => {
         <div className="text-center ">
           <h1 style={{ textDecoration: "underline red" }}>ViewFeedback</h1>
         </div>
-        <table className="table shadow-lg"  style={{ margin: "2%" }}>
+        <table className="table shadow-lg" style={{ margin: "2%" }}>
           <thead>
             <tr style={{ fontSize: "17px" }}>
-              <th className="bg-primary" scope="col">UserName</th>
-              <th className="bg-primary" scope="col">UserEmail</th>
-              <th className="bg-primary" scope="col">UserRating</th>
-              <th className="bg-primary" scope="col">UserFeedback</th>
-              <th className="bg-primary" scope="col">DeleteData</th>
+              <th className="bg-primary" scope="col">
+                UserName
+              </th>
+              <th className="bg-primary" scope="col">
+                UserEmail
+              </th>
+              <th className="bg-primary" scope="col">
+                UserRating
+              </th>
+              <th className="bg-primary" scope="col">
+                UserFeedback
+              </th>
+              <th className="bg-primary" scope="col">
+                DeleteData
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -85,10 +97,8 @@ export default AllFeedback = () => {
         </table>
       </div>
       <div className="foot">
-        <Footer/>
+        <Footer />
       </div>
     </>
   );
-};
-
-
+}

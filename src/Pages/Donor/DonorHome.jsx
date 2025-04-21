@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import DonorHeader from "./DonorHeader";
 import Carousal from "../Carousal";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 
 export default () => {
   const navigate = useNavigate();

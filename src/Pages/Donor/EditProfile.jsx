@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import DonorHeader from "./DonorHeader";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 
 function EditProfile() {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function EditProfile() {
   }
 
   const handleData = (e) => {
-      setProfile({ ...profile, [e.target.name]: e.target.value });
+    setProfile({ ...profile, [e.target.name]: e.target.value });
   };
   const handleForm = async (e) => {
     e.preventDefault();

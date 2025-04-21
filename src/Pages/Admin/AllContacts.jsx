@@ -1,11 +1,11 @@
 import axios from "axios";
 import React from "react";
 import AdminHeader from "./AdminHeader";
-import { useState, useEffect } from "react";  
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 
-export default  () => {
+export default () => {
   const navigate = useNavigate();
   const token_data = localStorage.getItem("TokenKey");
   useEffect(() => {
@@ -38,7 +38,7 @@ export default  () => {
 
       if (isDelete.data.code == 200) {
         alert("Successfully Delete");
-        setContact(contact.filter(item => item._id!==id))
+        setContact(contact.filter((item) => item._id !== id));
       }
     }
   };
@@ -52,11 +52,21 @@ export default  () => {
         <table className="table shadow-lg" style={{ margin: "2%" }}>
           <thead>
             <tr style={{ fontSize: "17px" }}>
-              <th className="bg-primary" scope="col">UserName</th>
-              <th className="bg-primary" scope="col">UserEmail</th>
-              <th className="bg-primary" scope="col">UserPhone</th>
-              <th className="bg-primary" scope="col">UserQuery</th>
-              <th className="bg-primary" scope="col">Delete Data</th>
+              <th className="bg-primary" scope="col">
+                UserName
+              </th>
+              <th className="bg-primary" scope="col">
+                UserEmail
+              </th>
+              <th className="bg-primary" scope="col">
+                UserPhone
+              </th>
+              <th className="bg-primary" scope="col">
+                UserQuery
+              </th>
+              <th className="bg-primary" scope="col">
+                Delete Data
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -87,10 +97,8 @@ export default  () => {
         </table>
       </div>
       <div className="foot">
-        <Footer/>
+        <Footer />
       </div>
     </>
   );
 };
-
-

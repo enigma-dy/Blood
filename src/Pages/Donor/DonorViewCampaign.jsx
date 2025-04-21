@@ -1,8 +1,8 @@
-import CampaignCard from "../CampaignCard";
+// import CampaignCard from "../CampaignCard";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DonorHeader from "./DonorHeader";
-import Footer from "../Footer";
+// import DonorHeader from "./DonorHeader";
+import Footer from "../../components/Footer";
 
 export default () => {
   const navigate = useNavigate();
@@ -14,11 +14,11 @@ export default () => {
   });
   return (
     <>
-      <DonorHeader />
+      {/* <DonorHeader /> */}
       <div className="text-center" style={{ marginTop: "2%" }}>
         <h1 style={{ textDecoration: "underline red" }}>OUR CAMAPAIGNS</h1>
       </div>
-      <CampaignCard/>
+      {/* <CampaignCard /> */}
 
       <Footer />
     </>

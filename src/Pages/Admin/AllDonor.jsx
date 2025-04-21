@@ -3,9 +3,9 @@ import React from "react";
 import AdminHeader from "./AdminHeader";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 
-export default AllDonor= () => {
+export default function AllDonor() {
   const navigate = useNavigate();
   const token_data = localStorage.getItem("TokenKey");
   useEffect(() => {
@@ -42,6 +42,7 @@ export default AllDonor= () => {
     };
     fetchedData();
   }, []);
+
   return (
     <>
       <AdminHeader />
@@ -94,10 +95,8 @@ export default AllDonor= () => {
         </table>
       </div>
       <div className="foot">
-        <Footer/>
+        <Footer />
       </div>
     </>
   );
-};
-
-
+}

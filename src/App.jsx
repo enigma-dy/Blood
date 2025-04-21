@@ -38,13 +38,15 @@ function App() {
         <Route path="/addCampaign" element={<AddCampaign />} />
         <Route path="/allContact" element={<AllContacts />} />
         <Route path="/donorLogin" element={<DonorLogin />} />
-        <Route path="/donorHome" element={<DonorHome />} />
-        <Route path="/viewFeedback" element={<AllFeedback />} />
-        <Route path="/addFeedback" element={<Feedback />} />
         <Route path="/donorViewCampaign" element={<DonorViewCampaign />} />
+        <Route path="/donorHome" element={<DonorHome />} />
         <Route path="/viewAdminDonor" element={<AllDonor />} />
-        <Route path="/viewDonor" element={<AllDonorCommon />} />
+        <Route path="/viewFeedback" element={<AllFeedback />} />
         <Route path="/viewDonors" element={<AllDonorDonor />} />
+        <Route path="/addFeedback" element={<Feedback />} />
+
+        <Route path="/viewDonor" element={<AllDonorCommon />} />
+
         <Route path="/editProfile" element={<EditProfile />} />
         <Route path="/deleteCampaign" element={<DeleteCampaignCard />} />
       </Routes>

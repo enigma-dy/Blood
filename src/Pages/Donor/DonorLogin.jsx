@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header from "../Header";
-import Footer from "../Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export default () => {
   let [logData, setLogData] = useState({
@@ -23,7 +23,7 @@ export default () => {
       let response = await axios.post(URL, logData);
       if (response.data.code == 200) {
         navigate("/donorHome");
-        localStorage.setItem("TokenKey", response.data.token); 
+        localStorage.setItem("TokenKey", response.data.token);
       } else if (response.data.code == 404) {
         alert(response.data.message);
       } else {
@@ -87,7 +87,7 @@ export default () => {
         </form>
       </div>
       <div className="foot">
-        <Footer/>
+        <Footer />
       </div>
     </>
   );

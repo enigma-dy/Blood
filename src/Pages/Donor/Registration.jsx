@@ -1,8 +1,8 @@
-import Header from "../Header";
+import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 
 export default () => {
   let navigate = useNavigate();
