@@ -20,7 +20,8 @@ export default function AdminHome() {
     <>
       <header className="text-center">
         <h1 style={{ marginBottom: "0%" }}>
-          Welcome Admin <i className="fa fa-heartbeat" style={{ color: "red" }}></i>
+          Welcome Admin{" "}
+          <i className="fa fa-heartbeat" style={{ color: "red" }}></i>
         </h1>
         <div
           className="text-center"
@@ -32,7 +33,11 @@ export default function AdminHome() {
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/adminHome" style={{ marginTop: "0%" }}>
+          <Link
+            className="navbar-brand"
+            to="/adminHome"
+            style={{ marginTop: "0%" }}
+          >
             <img
               style={{ marginTop: "0%" }}
               src={image}
@@ -57,7 +62,11 @@ export default function AdminHome() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/viewAdminDonor">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/viewAdminDonor"
+                >
                   Donors
                 </Link>
               </li>
@@ -98,5 +107,3 @@ export default function AdminHome() {
     </>
   );
 }
-
-

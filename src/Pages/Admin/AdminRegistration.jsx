@@ -29,8 +29,7 @@ export default function AdminRegistration() {
     setRegistration({ ...registration, [e.target.name]: e.target.value });
   };
 
-  const URL =hthttps://medical-backend-7ua9.onrender.com-7ua9.onrender.com
-    "https://medical-backend-7ua9.onrender.comnd-7ua9.onrender.com/user/addRegistration";
+  const URL = "https://medical-backend-7ua9.onrender.com/user/addRegistration";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

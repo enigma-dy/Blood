@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-// import Header from "./Header";
-// import Footer from "./Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export default () => {
   let [contact, setContact] = useState({
@@ -37,7 +37,7 @@ export default () => {
   };
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <div
         className="text-center shadow-lg rounded-pill"
         style={{ margin: "2%" }}
@@ -111,7 +111,7 @@ export default () => {
           </button>
         </form>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

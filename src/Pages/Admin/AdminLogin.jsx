@@ -10,8 +10,7 @@ export default function AdminLogin() {
   });
 
   const navigate = useNavigate();
-  const URL =
-    "https://medical-backend-7ua9.onrender.comnd-7ua9.onrender.com/admin/doLogin";
+  const URL = "https://medical-backend-7ua9.onrender.com/admin/doLogin";
 
   const dataFetch = (e) => {
     setLogData({ ...logData, [e.target.name]: e.target.value });

@@ -12,7 +12,7 @@ const DeleteCampaignCard = () => {
     if (!token_data) {
       navigate("/adminLogin");
     }
-  }, [token_data, navigate]);
+  }, [token_data, navigate]); // Added dependency array for better control
 
   const [campaign, setCampaign] = useState([]);
   const url = "https://medical-backend-7ua9.onrender.com/user/viewcampaign";
@@ -28,7 +28,7 @@ const DeleteCampaignCard = () => {
     };
 
     fetchData();
-  }, []);
+  }, []); // This useEffect runs only once on component mount
 
   const deleteData = async (e, id) => {
     e.preventDefault();
@@ -55,26 +55,30 @@ const DeleteCampaignCard = () => {
     <>
       <AdminHeader />
       <div
-        className="d-flex align-items-center justify-content-center flex-wrap"
+        className="d-flex items-align-center justify-content-center flex-wrap"
         style={{ marginBottom: "2%" }}
       >
         {campaign.map((item) => (
           <div
             key={item._id}
             className="card shadow-lg"
-            style={{ marginLeft: "2%", marginTop: "2%", width: "300px" }}
+            style={{ marginLeft: "2%", marginTop: "2%" }}
           >
             <img
               src={`https://medical-backend-7ua9.onrender.com/campaign/${item.userPic}`}
               className="card-img-top"
               alt="Campaign"
-              style={{ height: "300px", objectFit: "cover" }}
+              style={{ height: "300px" }}
             />
             <div className="card-body">
-              <h5 className="card-title">{item.userOrganizer}</h5>
-              <p className="card-subtitle mb-2 text-muted">
-                By {item.userName} on {item.userDate}
-              </p>
+              <h5 className="card-title">
+                {item.userOrganizer}
+                <p>
+                  -By {item.userName}
+                  <br />
+                  -on {item.userDate}
+                </p>
+              </h5>
               <p className="card-text">{item.userDiscription}</p>
               <button
                 className="btn btn-danger"
