@@ -28,8 +28,7 @@ export default function AddCampaign() {
     setCampaign({ ...campaign, [e.target.name]: e.target.value });
   };
 
-  const URL =
-    "https://medical-backend-7ua9.onrender.comnd-7ua9.onrender.com/admin/addCampaign";
+  const URL = "https://medical-backend-7ua9.onrender.com/admin/addCampaign";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

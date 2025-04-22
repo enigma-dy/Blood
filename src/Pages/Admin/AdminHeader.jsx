@@ -116,8 +116,9 @@ export default function AdminHeader() {
   return (
     <>
       <header className="text-center">
-        <h1 className="mb-0">
-          Welcome Admin <i className="fa fa-heartbeat" style={{ color: "red" }}></i>
+        <h1 style={{ marginBottom: "0%" }}>
+          Welcome Admin{" "}
+          <i className="fa fa-heartbeat" style={{ color: "red" }}></i>
         </h1>
         <hr className="my-0" style={{ borderTop: "2px solid red" }} />
       </header>
@@ -125,7 +126,7 @@ export default function AdminHeader() {
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/adminHome">
+          <Link className="navbar-brand" to="/adminHome" style={{ marginTop: "0%" }}>
             <img
               src={image}
               alt="Logo"
@@ -151,7 +152,7 @@ export default function AdminHeader() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active" to="/viewAdminDonor">
+                <Link className="nav-link active" aria-current="page" to="/viewAdminDonor">
                   Donors
                 </Link>
               </li>
@@ -192,3 +193,5 @@ export default function AdminHeader() {
     </>
   );
 }
+
+
