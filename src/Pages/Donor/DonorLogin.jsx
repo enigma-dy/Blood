@@ -6,13 +6,15 @@ import Footer from "../../components/Footer";
 
 export default () => {
   let [logData, setLogData] = useState({
-    userId: "",
+    email: "",
     password: "",
   });
+
   const dataFetch = (evt) => {
     setLogData({ ...logData, [evt.target.name]: evt.target.value });
   };
-  let URL = "https://medical-backend-7ua9.onrender.com/donor/dologin";
+
+  const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/login`;
 
   const navigate = useNavigate();
 
@@ -21,19 +23,20 @@ export default () => {
 
     try {
       let response = await axios.post(URL, logData);
-      if (response.data.code == 200) {
-        navigate("/donorHome");
+
+      if (response.data.success) {
         localStorage.setItem("TokenKey", response.data.token);
-      } else if (response.data.code == 404) {
-        alert(response.data.message);
+        navigate("/donorHome");
       } else {
-        alert("Email Not found");
+        alert(response.data.message || "Login failed");
       }
     } catch (err) {
       console.log(err);
+      alert("An error occurred during login.");
     }
+
     setLogData({
-      userId: "",
+      email: "",
       password: "",
     });
   };
@@ -52,16 +55,16 @@ export default () => {
         >
           <div className="form-floating mb-3 w-50">
             <input
-              type="text"
-              name="userId"
+              type="email"
+              name="email"
               className="form-control"
-              id="userId"
+              id="email"
               placeholder="name@example.com"
               onChange={dataFetch}
               required
-              value={logData.userId}
+              value={logData.email}
             />
-            <label htmlFor="floatingInput">User ID</label>
+            <label htmlFor="email">Email</label>
           </div>
 
           <div className="form-floating mb-3 w-50">
@@ -69,17 +72,18 @@ export default () => {
               type="password"
               name="password"
               className="form-control"
-              id="passwordId"
+              id="password"
               placeholder="Password"
               onChange={dataFetch}
               required
               value={logData.password}
             />
-            <label htmlFor="floatingPassword">Password</label>
+            <label htmlFor="password">Password</label>
           </div>
+
           <button
             type="submit"
-            className="btn btn-primary "
+            className="btn btn-primary"
             style={{ marginBottom: "2%" }}
           >
             Donor Login

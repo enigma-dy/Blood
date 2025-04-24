@@ -24,6 +24,10 @@ import AllDonor from "./Pages/Admin/AllDonor";
 
 import AllDonorCommon from "./components/AllDonorCommon";
 
+import CreateDonation from "./Pages/Donor/CreateDonation";
+
+import HospitalsPage from "./Pages/Donor/Hospital";
+
 function App() {
   return (
     <BrowserRouter>
@@ -45,8 +49,9 @@ function App() {
         <Route path="/viewDonors" element={<AllDonorDonor />} />
         <Route path="/addFeedback" element={<Feedback />} />
 
+        <Route path="/hospitals" element={<HospitalsPage />} />
+        <Route path="/donations/new/:hospitalId" element={<CreateDonation />} />
         <Route path="/viewDonor" element={<AllDonorCommon />} />
-
         <Route path="/editProfile" element={<EditProfile />} />
         <Route path="/deleteCampaign" element={<DeleteCampaignCard />} />
       </Routes>

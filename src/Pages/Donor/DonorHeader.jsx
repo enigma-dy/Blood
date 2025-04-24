@@ -1,31 +1,62 @@
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import image from "/favicon.png";
-import {  useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 export default () => {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
   const tokenData = localStorage.getItem("TokenKey");
+
   const logout = (e) => {
-    if (window.confirm("Do you Want to LogOut")) {
-      if (!tokenData) {
-        navigate("/donorLogin");
-      } else {
-        localStorage.removeItem("TokenKey");
-        navigate("/donorLogin");
-      }
+    e.preventDefault();
+    if (window.confirm("Do you want to log out?")) {
+      localStorage.removeItem("TokenKey");
+      navigate("/donorLogin");
     }
   };
-  
-  
+
+  useEffect(() => {
+    if (!tokenData) {
+      navigate("/donorLogin");
+    } else {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/me`,
+            {
+              headers: {
+                Authorization: `Bearer ${tokenData}`,
+              },
+            }
+          );
+
+          if (response.data.success) {
+            setUserData(response.data.data);
+          } else {
+            alert("Failed to fetch user data");
+            navigate("/donorLogin");
+          }
+        } catch (err) {
+          console.log(err);
+          alert("An error occurred while fetching user data.");
+          navigate("/donorLogin");
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [tokenData, navigate]);
+
   return (
     <>
       <div className="text-center">
         <h1 style={{ marginBottom: "0%" }}>
           <i className="fa fa-heartbeat" style={{ color: "red" }}></i>
-          Welcome Donor
+          Welcome {userData ? userData.name.split(" ")[0] : "Donor"}
         </h1>
       </div>
-      <div className="text-center" style={{ marginBottom: "0%" }}></div>
 
       <hr
         style={{
@@ -80,7 +111,7 @@ export default () => {
 
               <li className="nav-item ">
                 <a className="nav-link" href="/editprofile">
-                  EditProfile
+                  Profile
                 </a>
               </li>
 
@@ -89,6 +120,13 @@ export default () => {
                   Feedback
                 </a>
               </li>
+
+              <li className="nav-item forward">
+                <Link className="nav-link" to="/hospitals">
+                  Hospitals
+                </Link>
+              </li>
+
               <li className="nav-item forward">
                 <a className="nav-link" href="/donorViewCampaign">
                   ViewCampaign

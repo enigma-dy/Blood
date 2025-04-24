@@ -1,199 +1,241 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DonorHeader from "./DonorHeader";
 import Footer from "../../components/Footer";
 
 function EditProfile() {
   const navigate = useNavigate();
-  const token_data = localStorage.getItem("TokenKey");
-  useEffect(() => {
-    if (!token_data) {
-      navigate("/donorLogin");
-    }
-  });
-
+  const token = localStorage.getItem("TokenKey");
+  const [isEditable, setIsEditable] = useState(false);
   const [profile, setProfile] = useState({
-    id: "",
-    userId: "",
-    userPassword: "",
-    userName: "",
-    userEmail: "",
-    userPhone: "",
-    userAge: "",
-    userCity: "",
-    userBloodGroup: "",
+    name: "",
+    email: "",
+    phone: "",
+    bloodType: "",
+    isAvailable: false,
+    profilePic: null,
+    previewImage: "",
   });
 
-  let URL =
-    "https://medical-backend-7ua9.onrender.comnd-7ua9.onrender.com/donor/editprofile";
-
   useEffect(() => {
-    fetchData();
-  }, []);
-  async function fetchData() {
+    if (!token) {
+      navigate("/donorLogin");
+    } else {
+      fetchProfileData();
+    }
+  }, [token, navigate]);
+
+  async function fetchProfileData() {
     try {
-      const response = await axios.post(
-        `http://localhost:1801/donor/getProfile/${token_data}`
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      setProfile(response.data);
+      const { name, email, phone, bloodType, isAvailable } = response.data.data;
+      setProfile({
+        name,
+        email,
+        phone,
+        bloodType,
+        isAvailable,
+        profilePic: null,
+        previewImage: "",
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching profile:", error);
     }
   }
 
-  const handleData = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setProfile((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
-  const handleForm = async (e) => {
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfile((prev) => ({
+        ...prev,
+        profilePic: file,
+        previewImage: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      profile.id = token_data;
-      const response = await axios.put(URL, profile);
-      if (response.data.acknowledged) alert("profile edit successfully......");
-      navigate("/viewDonors");
+      const formData = new FormData();
+      formData.append("name", profile.name);
+      formData.append("email", profile.email);
+      formData.append("phone", profile.phone);
+      formData.append("bloodType", profile.bloodType);
+      formData.append("isAvailable", profile.isAvailable);
+      if (profile.profilePic) {
+        formData.append("profilePic", profile.profilePic);
+      }
+
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/update`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("Profile updated successfully!");
+        setIsEditable(false);
+        fetchProfileData();
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile. Please try again.");
     }
   };
 
   return (
     <>
       <DonorHeader />
-      <div
-        className="text-center shadow-lg rounded-pill"
-        style={{ margin: "2%" }}
-      >
-        <h1 style={{ textDecoration: "underline red" }}>Edit Profile</h1>
-        <form
-          onSubmit={handleForm}
-          className="d-flex flex-column justify-content-center align-items-center "
-        >
-          <div className="form-floating mb-3 w-50">
-            <input
-              type="text"
-              name="userId"
-              className="form-control"
-              id="floatingInputid"
-              placeholder="ID"
-              required
-              onChange={handleData}
-              value={profile.userId}
-            />
-            <label htmlFor="floatingInput">ID</label>
+      <div className="">
+        <div className="">
+          <div className="">
+            <h2 className="">Donor Profile</h2>
           </div>
+          <div className="">
+            <div className="">
+              <button
+                className={`btn ${isEditable ? "btn-danger" : "btn-primary"}`}
+                onClick={() => setIsEditable(!isEditable)}
+              >
+                {isEditable ? "Cancel" : "Edit Profile"}
+              </button>
+            </div>
 
-          <div className="form-floating mb-3 w-50">
-            <input
-              type="text"
-              name="userPassword"
-              className="form-control"
-              id="floatingInputpassword"
-              placeholder="Password"
-              required
-              onChange={handleData}
-              value={profile.userPassword}
-            />
-            <label htmlFor="floatingInput">Password</label>
-          </div>
+            <form onSubmit={handleSubmit}>
+              <div className="">
+                <div className="">
+                  <label className="form-label">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    value={profile.name}
+                    onChange={handleInputChange}
+                    disabled={!isEditable}
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    value={profile.email}
+                    onChange={handleInputChange}
+                    disabled={!isEditable}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="form-floating mb-3 w-50">
-            <input
-              type="text"
-              name="userName"
-              className="form-control"
-              id="floatingInputName"
-              placeholder="name"
-              required
-              onChange={handleData}
-              value={profile.userName}
-            />
-            <label htmlFor="floatingInput">Name</label>
-          </div>
+              <div className="">
+                <div className="">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    className="form-control"
+                    value={profile.phone}
+                    onChange={handleInputChange}
+                    disabled={!isEditable}
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label className="form-label">Blood Type</label>
+                  <select
+                    className="form-select"
+                    name="bloodType"
+                    value={profile.bloodType}
+                    onChange={handleInputChange}
+                    disabled={!isEditable}
+                    required
+                  >
+                    <option value="">Select Blood Type</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
+              </div>
 
-          <div className="form-floating mb-3 w-50">
-            <input
-              type="email"
-              name="userEmail"
-              className="form-control"
-              id="floatingInputEmail"
-              placeholder="name@example.com"
-              required
-              onChange={handleData}
-              value={profile.userEmail}
-            />
-            <label htmlFor="floatingInput">Email address</label>
-          </div>
-          <div className="form-floating w-50 mb-3">
-            <input
-              type="number"
-              name="userPhone"
-              className="form-control"
-              id="floatingPassword"
-              placeholder="Password"
-              required
-              onChange={handleData}
-              value={profile.userPhone}
-            />
-            <label htmlFor="floatingPassword">PhoneNumber</label>
-          </div>
-          <div className="form-floating w-50 mb-3">
-            <input
-              type="number"
-              name="userAge"
-              className="form-control"
-              id="floatingAge"
-              placeholder="age"
-              required
-              onChange={handleData}
-              value={profile.userAge}
-            />
-            <label htmlFor="floatingPassword">Age</label>
-          </div>
-          <select
-            className="form-select w-50 mb-3"
-            aria-label="Default select example"
-            defaultValue={profile.userCity}
-            onChange={handleData}
-            required
-            name="userCity"
-          >
-            <option>Cities we are available at</option>
-            <option value="lucknow">Lucknow</option>
-            <option value="kanpur">Kanpur</option>
-            <option value="delhi">Delhi</option>
-          </select>
+              <div className="">
+                <input
+                  type="checkbox"
+                  name="isAvailable"
+                  className="form-check-input"
+                  checked={profile.isAvailable}
+                  onChange={handleInputChange}
+                  disabled={!isEditable}
+                  id="availableCheck"
+                />
+                <label className="form-check-label" htmlFor="availableCheck">
+                  Available to donate
+                </label>
+              </div>
 
-          <select
-            className="form-select w-50 mb-3"
-            aria-label="Default select example"
-            required
-            defaultValue={profile.userBloodGroup}
-            onChange={handleData}
-            name="userBloodGroup"
-          >
-            <option>BloodGroup </option>
-            <option value="A+">A+</option>
-            <option value="B+">B+</option>
-            <option value="O+">O+</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="A-">A-</option>
-            <option value="B-">B-</option>
-            <option value="O-">O-</option>
-          </select>
+              <div className="">
+                <label className="form-label">Profile Picture</label>
+                {profile.previewImage ? (
+                  <img
+                    src={profile.previewImage}
+                    alt="Preview"
+                    className="img-thumbnail mb-2 d-block"
+                    style={{ maxWidth: "200px" }}
+                  />
+                ) : null}
+                <input
+                  type="file"
+                  name="profilePic"
+                  className="form-control"
+                  onChange={handleFileChange}
+                  disabled={!isEditable}
+                  accept="image/*"
+                />
+              </div>
 
-          <button
-            className="btn btn-primary"
-            style={{ marginBottom: "2%" }}
-            type="submit"
-          >
-            Update Profile
-          </button>
-        </form>
+              {isEditable && (
+                <div className="">
+                  <button type="submit" className="btn btn-primary">
+                    Save Changes
+                  </button>
+                </div>
+              )}
+            </form>
+          </div>
+        </div>
       </div>
       <Footer />
     </>
   );
 }
+
 export default EditProfile;

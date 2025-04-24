@@ -1,51 +1,57 @@
 import Header from "../../components/Header";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
 import Footer from "../../components/Footer";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
-export default () => {
-  let navigate = useNavigate();
-  let [registration, setRegistration] = useState({
-    userId: "",
-    userPassword: "",
-    userName: "",
-    userEmail: "",
-    userPhone: "",
-    userAge: "",
-    userCity: "",
-    userBloodGroup: "",
+export default function RegistrationForm() {
+  const navigate = useNavigate();
+
+  const [registration, setRegistration] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "donor",
+    bloodType: "",
+    phone: "",
+    address: "",
+    state: "",
+    lga: "",
   });
 
   const handleData = (e) => {
-    setRegistration({ ...registration, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setRegistration((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  let URL = "https://medical-backend-7ua9.onrender.com/user/addRegistration";
+  const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/register`;
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      let response = await axios.post(URL, registration);
-
+      await axios.post(URL, registration);
+      alert("Successfully Registered");
       navigate("/");
-      alert(`Successfully Registered`);
     } catch (err) {
-      console.log(err);
+      console.error("Registration error:", err.response?.data || err.message);
     }
 
     setRegistration({
-      userId: "",
-      userPassword: "",
-      userName: "",
-      userEmail: "",
-      userPhone: "",
-      userAge: "",
-      userCity: "",
-      userBloodGroup: "",
+      name: "",
+      email: "",
+      password: "",
+      role: "donor",
+      bloodType: "",
+      phone: "",
+      address: "",
+      state: "",
+      lga: "",
     });
   };
+
   return (
     <>
       <Header />
@@ -56,112 +62,107 @@ export default () => {
         <h1 style={{ textDecoration: "underline red" }}>Registration Form</h1>
         <form
           onSubmit={handleSubmit}
-          className="d-flex flex-column justify-content-center align-items-center "
+          className="d-flex flex-column justify-content-center align-items-center"
         >
           <div className="form-floating mb-3 w-50">
             <input
               type="text"
-              name="userId"
+              name="name"
               className="form-control"
-              id="floatingInputid"
-              placeholder="ID"
+              placeholder="Full Name"
               required
               onChange={handleData}
-              value={registration.userId}
+              value={registration.name}
             />
-            <label htmlFor="floatingInput">ID</label>
-          </div>
-
-          <div className="form-floating mb-3 w-50">
-            <input
-              type="text"
-              name="userPassword"
-              className="form-control"
-              id="floatingInputpassword"
-              placeholder="Password"
-              required
-              onChange={handleData}
-              value={registration.userPassword}
-            />
-            <label htmlFor="floatingInput">Password</label>
-          </div>
-
-          <div className="form-floating mb-3 w-50">
-            <input
-              type="text"
-              name="userName"
-              className="form-control"
-              id="floatingInputName"
-              placeholder="name"
-              required
-              onChange={handleData}
-              value={registration.userName}
-            />
-            <label htmlFor="floatingInput">Name</label>
+            <label htmlFor="name">Name</label>
           </div>
 
           <div className="form-floating mb-3 w-50">
             <input
               type="email"
-              name="userEmail"
+              name="email"
               className="form-control"
-              id="floatingInputEmail"
-              placeholder="name@example.com"
+              placeholder="Email"
               required
               onChange={handleData}
-              value={registration.userEmail}
+              value={registration.email}
             />
-            <label htmlFor="floatingInput">Email address</label>
+            <label htmlFor="email">Email</label>
           </div>
-          <div className="form-floating w-50 mb-3">
+
+          <div className="form-floating mb-3 w-50">
             <input
-              type="number"
-              name="userPhone"
+              type="password"
+              name="password"
               className="form-control"
-              id="floatingPassword"
               placeholder="Password"
               required
               onChange={handleData}
-              value={registration.userPhone}
+              value={registration.password}
             />
-            <label htmlFor="floatingPassword">PhoneNumber</label>
+            <label htmlFor="password">Password</label>
           </div>
-          <div className="form-floating w-50 mb-3">
+
+          <div className="form-floating mb-3 w-50">
             <input
-              type="number"
-              name="userAge"
+              type="text"
+              name="phone"
               className="form-control"
-              id="floatingAge"
-              placeholder="age"
+              placeholder="Phone Number"
               required
               onChange={handleData}
-              value={registration.userAge}
+              value={registration.phone}
             />
-            <label htmlFor="floatingPassword">Age</label>
+            <label htmlFor="phone">Phone</label>
           </div>
-          <select
-            className="form-select w-50 mb-3"
-            aria-label="Default select example"
-            defaultValue={registration.userCity}
-            onChange={handleData}
-            required
-            name="userCity"
-          >
-            <option>Cities we are available at</option>
-            <option value="lucknow">Lucknow</option>
-            <option value="kanpur">Kanpur</option>
-            <option value="delhi">Delhi</option>
-          </select>
+
+          <div className="form-floating mb-3 w-50">
+            <input
+              type="text"
+              name="address"
+              className="form-control"
+              placeholder="Address"
+              required
+              onChange={handleData}
+              value={registration.address}
+            />
+            <label htmlFor="address">Address</label>
+          </div>
+
+          <div className="form-floating mb-3 w-50">
+            <input
+              type="text"
+              name="state"
+              className="form-control"
+              placeholder="State"
+              required
+              onChange={handleData}
+              value={registration.state}
+            />
+            <label htmlFor="state">State</label>
+          </div>
+
+          <div className="form-floating mb-3 w-50">
+            <input
+              type="text"
+              name="lga"
+              className="form-control"
+              placeholder="LGA"
+              required
+              onChange={handleData}
+              value={registration.lga}
+            />
+            <label htmlFor="lga">LGA</label>
+          </div>
 
           <select
             className="form-select w-50 mb-3"
-            aria-label="Default select example"
+            name="bloodType"
             required
-            defaultValue={registration.userBloodGroup}
             onChange={handleData}
-            name="userBloodGroup"
+            value={registration.bloodType}
           >
-            <option>BloodGroup </option>
+            <option value="">Select Blood Type</option>
             <option value="A+">A+</option>
             <option value="B+">B+</option>
             <option value="O+">O+</option>
@@ -172,11 +173,7 @@ export default () => {
             <option value="O-">O-</option>
           </select>
 
-          <button
-            className="btn btn-primary"
-            style={{ marginBottom: "2%" }}
-            type="submit"
-          >
+          <button className="btn btn-primary mb-3" type="submit">
             Submit form
           </button>
         </form>
@@ -184,4 +181,4 @@ export default () => {
       <Footer />
     </>
   );
-};
+}

@@ -66,10 +66,6 @@ export default () => {
           </tbody>
         </table>
       </div>
-
-      <div className="foot">
-        <Footer />
-      </div>
     </>
   );
 };

@@ -1,7 +1,5 @@
 import axios from "axios";
-import React from "react";
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DonorHeader from "./DonorHeader";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
@@ -14,66 +12,305 @@ export default () => {
     if (!token_data) {
       navigate("/donorLogin");
     }
-  });
-  let [donor, setDonor] = useState([]);
+  }, [token_data, navigate]);
 
-  const url = "https://medical-backend-7ua9.onrender.com/admin/showDonor";
+  const [donor, setDonor] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState({
+    bloodType: "",
+    startDate: "",
+    endDate: "",
+    sortBy: "donationDate",
+    sortOrder: "desc",
+    page: 1,
+    limit: 10,
+  });
+
+  const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+
+      if (filters.bloodType) params.append("bloodType", filters.bloodType);
+      if (filters.startDate) params.append("startDate", filters.startDate);
+      if (filters.endDate) params.append("endDate", filters.endDate);
+      params.append("sortBy", filters.sortBy);
+      params.append("sortOrder", filters.sortOrder);
+      params.append("page", filters.page);
+      params.append("limit", filters.limit);
+
+      const url = `${
+        import.meta.env.VITE_API_BASE_URL
+      }/api/v1/donation?${params.toString()}`;
+      let response = await axios.get(url);
+      setDonor(response.data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchedData = async () => {
-      try {
-        let response = await axios.get(url);
-        console.log(response.data);
-        setDonor(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchedData();
-  }, []);
+    fetchData();
+  }, [filters]);
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+      page: 1,
+    }));
+  };
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+      page: 1,
+    }));
+  };
+
+  const handleSortChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+      page: 1,
+    }));
+  };
+
+  const handlePageChange = (newPage) => {
+    setFilters((prev) => ({
+      ...prev,
+      page: newPage,
+    }));
+  };
+
+  const resetFilters = () => {
+    setFilters({
+      bloodType: "",
+      startDate: "",
+      endDate: "",
+      sortBy: "donationDate",
+      sortOrder: "desc",
+      page: 1,
+      limit: 10,
+    });
+  };
+
   return (
     <>
       <DonorHeader />
 
-      <div className="text-center " style={{ margin: "2%" }}>
-        <div className="text-center ">
+      <div className="container" style={{ margin: "2%" }}>
+        <div className="text-center mb-4">
           <h1 style={{ textDecoration: "underline red" }}>All Donors</h1>
         </div>
-        <table
-          className="table shadow-lg "
-          style={{ margin: "2%", marginRight: "2%" }}
-        >
-          <thead>
-            <tr style={{ fontSize: "17px" }}>
-              <th className="bg-primary" scope="col">
-                UserName
-              </th>
-              <th className="bg-primary" scope="col">
-                UserEmail
-              </th>
-              <th className="bg-primary" scope="col">
-                UserId
-              </th>
-              <th className="bg-primary" scope="col">
-                BloodGroup
-              </th>
-            </tr>
-          </thead>
-          <tbody className="rounded-pill">
-            {donor.map((item) => {
-              return (
-                <tr style={{ fontSize: "17px" }} key={item.id}>
-                  <td scope="row" key={item.id}>
-                    {item.userName}
-                  </td>
-                  <td key={item.id}>{item.userEmail}</td>
-                  <td key={item.id}>{item.userId}</td>
-                  <td key={item.id}>{item.userBloodGroup}</td>
+
+        {/* Filter Section */}
+        <div className="card mb-4 shadow-sm">
+          <div className="card-body">
+            <h5 className="card-title">Filters</h5>
+            <div className="row">
+              <div className="col-md-3">
+                <label htmlFor="bloodType" className="form-label">
+                  Blood Type
+                </label>
+                <select
+                  id="bloodType"
+                  name="bloodType"
+                  className="form-select"
+                  value={filters.bloodType}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">All Types</option>
+                  {bloodTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-md-3">
+                <label htmlFor="startDate" className="form-label">
+                  From Date
+                </label>
+                <input
+                  type="date"
+                  id="startDate"
+                  name="startDate"
+                  className="form-control"
+                  value={filters.startDate}
+                  onChange={handleDateChange}
+                />
+              </div>
+
+              <div className="col-md-3">
+                <label htmlFor="endDate" className="form-label">
+                  To Date
+                </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  name="endDate"
+                  className="form-control"
+                  value={filters.endDate}
+                  onChange={handleDateChange}
+                />
+              </div>
+
+              <div className="col-md-3">
+                <label htmlFor="sortBy" className="form-label">
+                  Sort By
+                </label>
+                <select
+                  id="sortBy"
+                  name="sortBy"
+                  className="form-select"
+                  value={filters.sortBy}
+                  onChange={handleSortChange}
+                >
+                  <option value="donationDate">Donation Date</option>
+                  <option value="donor.name">Donor Name</option>
+                </select>
+              </div>
+
+              <div className="col-md-3 mt-3">
+                <label htmlFor="sortOrder" className="form-label">
+                  Sort Order
+                </label>
+                <select
+                  id="sortOrder"
+                  name="sortOrder"
+                  className="form-select"
+                  value={filters.sortOrder}
+                  onChange={handleSortChange}
+                >
+                  <option value="desc">Descending</option>
+                  <option value="asc">Ascending</option>
+                </select>
+              </div>
+
+              <div className="col-md-3 mt-3">
+                <label htmlFor="limit" className="form-label">
+                  Items Per Page
+                </label>
+                <select
+                  id="limit"
+                  name="limit"
+                  className="form-select"
+                  value={filters.limit}
+                  onChange={handleFilterChange}
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+
+              <div className="col-md-3 mt-3 d-flex align-items-end">
+                <button
+                  className="btn btn-outline-secondary me-2"
+                  onClick={resetFilters}
+                >
+                  Reset Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Results Table */}
+        {loading ? (
+          <div className="text-center my-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <table className="table shadow-lg">
+              <thead>
+                <tr style={{ fontSize: "17px" }}>
+                  <th className="bg-primary" scope="col">
+                    Donor Name
+                  </th>
+                  <th className="bg-primary" scope="col">
+                    Donor Blood Type
+                  </th>
+                  <th className="bg-primary" scope="col">
+                    Hospital Name
+                  </th>
+                  <th className="bg-primary" scope="col">
+                    Donation Date
+                  </th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {donor.map((item) => (
+                  <tr style={{ fontSize: "17px" }} key={item._id}>
+                    <td scope="row">{item.donor.name}</td>
+                    <td>{item.donor.bloodType}</td>
+                    <td>{item.hospital.name}</td>
+                    <td>{new Date(item.donationDate).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* Pagination */}
+            <nav aria-label="Page navigation">
+              <ul className="pagination justify-content-center">
+                <li
+                  className={`page-item ${
+                    filters.page === 1 ? "disabled" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(filters.page - 1)}
+                  >
+                    Previous
+                  </button>
+                </li>
+                {[...Array(5)].map((_, i) => {
+                  const pageNum = filters.page + i - 2;
+                  if (pageNum < 1) return null;
+                  return (
+                    <li
+                      key={pageNum}
+                      className={`page-item ${
+                        filters.page === pageNum ? "active" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    </li>
+                  );
+                })}
+                <li className="page-item">
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(filters.page + 1)}
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </>
+        )}
       </div>
 
       <div className="foot">
