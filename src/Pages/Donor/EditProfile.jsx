@@ -83,7 +83,7 @@ function EditProfile() {
         formData.append("profilePic", profile.profilePic);
       }
 
-      const response = await axios.patch(
+      const response = await axios.put(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/update`,
         formData,
         {
@@ -108,41 +108,36 @@ function EditProfile() {
   return (
     <>
       <DonorHeader />
-      <div className="">
-        <div className="">
-          <div className="">
-            <h2 className="">Donor Profile</h2>
+      <div>
+        <div>
+          <div>
+            <h2>Donor Profile</h2>
           </div>
-          <div className="">
-            <div className="">
-              <button
-                className={`btn ${isEditable ? "btn-danger" : "btn-primary"}`}
-                onClick={() => setIsEditable(!isEditable)}
-              >
+          <div>
+            <div>
+              <button onClick={() => setIsEditable(!isEditable)}>
                 {isEditable ? "Cancel" : "Edit Profile"}
               </button>
             </div>
 
             <form onSubmit={handleSubmit}>
-              <div className="">
-                <div className="">
-                  <label className="form-label">Name</label>
+              <div>
+                <div>
+                  <label>Name</label>
                   <input
                     type="text"
                     name="name"
-                    className="form-control"
                     value={profile.name}
                     onChange={handleInputChange}
                     disabled={!isEditable}
                     required
                   />
                 </div>
-                <div className="">
-                  <label className="form-label">Email</label>
+                <div>
+                  <label>Email</label>
                   <input
                     type="email"
                     name="email"
-                    className="form-control"
                     value={profile.email}
                     onChange={handleInputChange}
                     disabled={!isEditable}
@@ -151,23 +146,21 @@ function EditProfile() {
                 </div>
               </div>
 
-              <div className="">
-                <div className="">
-                  <label className="form-label">Phone</label>
+              <div>
+                <div>
+                  <label>Phone</label>
                   <input
                     type="tel"
                     name="phone"
-                    className="form-control"
                     value={profile.phone}
                     onChange={handleInputChange}
                     disabled={!isEditable}
                     required
                   />
                 </div>
-                <div className="">
-                  <label className="form-label">Blood Type</label>
+                <div>
+                  <label>Blood Type</label>
                   <select
-                    className="form-select"
                     name="bloodType"
                     value={profile.bloodType}
                     onChange={handleInputChange}
@@ -187,35 +180,26 @@ function EditProfile() {
                 </div>
               </div>
 
-              <div className="">
+              <div>
                 <input
                   type="checkbox"
                   name="isAvailable"
-                  className="form-check-input"
                   checked={profile.isAvailable}
                   onChange={handleInputChange}
                   disabled={!isEditable}
                   id="availableCheck"
                 />
-                <label className="form-check-label" htmlFor="availableCheck">
-                  Available to donate
-                </label>
+                <label htmlFor="availableCheck">Available to donate</label>
               </div>
 
-              <div className="">
-                <label className="form-label">Profile Picture</label>
-                {profile.previewImage ? (
-                  <img
-                    src={profile.previewImage}
-                    alt="Preview"
-                    className="img-thumbnail mb-2 d-block"
-                    style={{ maxWidth: "200px" }}
-                  />
-                ) : null}
+              <div>
+                <label>Profile Picture</label>
+                {profile.previewImage && (
+                  <img src={profile.previewImage} alt="Preview" />
+                )}
                 <input
                   type="file"
                   name="profilePic"
-                  className="form-control"
                   onChange={handleFileChange}
                   disabled={!isEditable}
                   accept="image/*"
@@ -223,10 +207,8 @@ function EditProfile() {
               </div>
 
               {isEditable && (
-                <div className="">
-                  <button type="submit" className="btn btn-primary">
-                    Save Changes
-                  </button>
+                <div>
+                  <button type="submit">Save Changes</button>
                 </div>
               )}
             </form>

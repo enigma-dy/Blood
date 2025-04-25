@@ -1,8 +1,10 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RegistrationForm() {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ export default function RegistrationForm() {
     lga: "",
   });
 
+  useEffect(() => {}, []);
+
   const handleData = (e) => {
     const { name, value } = e.target;
     setRegistration((prev) => ({
@@ -32,29 +36,67 @@ export default function RegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(URL, registration);
-      alert("Successfully Registered");
-      navigate("/");
-    } catch (err) {
-      console.error("Registration error:", err.response?.data || err.message);
-    }
+      const response = await axios.post(URL, registration);
 
-    setRegistration({
-      name: "",
-      email: "",
-      password: "",
-      role: "donor",
-      bloodType: "",
-      phone: "",
-      address: "",
-      state: "",
-      lga: "",
-    });
+      toast.success(
+        <div>
+          <p>Registration Successful!</p>
+          <p>Please check your email for verification or use this link:</p>
+          <a
+            href={response.data.verificationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Verify Account
+          </a>
+        </div>,
+        {
+          autoClose: false,
+          closeOnClick: false,
+        }
+      );
+
+      setRegistration({
+        name: "",
+        email: "",
+        password: "",
+        role: "donor",
+        bloodType: "",
+        phone: "",
+        address: "",
+        state: "",
+        lga: "",
+      });
+    } catch (err) {
+      console.error("Registration error:", err);
+
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        "Registration failed. Please try again.";
+
+      toast.error(`Error: ${errorMessage}`, {
+        autoClose: 5000,
+      });
+    }
   };
 
   return (
     <>
       <Header />
+      {/* ToastContainer should be placed at the root level */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div
         className="text-center shadow-lg rounded-pill"
         style={{ margin: "2%" }}
@@ -147,12 +189,12 @@ export default function RegistrationForm() {
               type="text"
               name="lga"
               className="form-control"
-              placeholder="LGA"
+              placeholder=""
               required
               onChange={handleData}
               value={registration.lga}
             />
-            <label htmlFor="lga">LGA</label>
+            <label htmlFor="lga">District</label>
           </div>
 
           <select

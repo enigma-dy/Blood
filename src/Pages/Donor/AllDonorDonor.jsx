@@ -113,18 +113,15 @@ export default () => {
         </div>
 
         {/* Filter Section */}
-        <div className="card mb-4 shadow-sm">
-          <div className="card-body">
-            <h5 className="card-title">Filters</h5>
-            <div className="row">
-              <div className="col-md-3">
-                <label htmlFor="bloodType" className="form-label">
-                  Blood Type
-                </label>
+        <div>
+          <div>
+            <h5>Filters</h5>
+            <div>
+              <div>
+                <label htmlFor="bloodType">Blood Type</label>
                 <select
                   id="bloodType"
                   name="bloodType"
-                  className="form-select"
                   value={filters.bloodType}
                   onChange={handleFilterChange}
                 >
@@ -137,42 +134,33 @@ export default () => {
                 </select>
               </div>
 
-              <div className="col-md-3">
-                <label htmlFor="startDate" className="form-label">
-                  From Date
-                </label>
+              <div>
+                <label htmlFor="startDate">From Date</label>
                 <input
                   type="date"
                   id="startDate"
                   name="startDate"
-                  className="form-control"
                   value={filters.startDate}
                   onChange={handleDateChange}
                 />
               </div>
 
-              <div className="col-md-3">
-                <label htmlFor="endDate" className="form-label">
-                  To Date
-                </label>
+              <div>
+                <label htmlFor="endDate">To Date</label>
                 <input
                   type="date"
                   id="endDate"
                   name="endDate"
-                  className="form-control"
                   value={filters.endDate}
                   onChange={handleDateChange}
                 />
               </div>
 
-              <div className="col-md-3">
-                <label htmlFor="sortBy" className="form-label">
-                  Sort By
-                </label>
+              <div>
+                <label htmlFor="sortBy">Sort By</label>
                 <select
                   id="sortBy"
                   name="sortBy"
-                  className="form-select"
                   value={filters.sortBy}
                   onChange={handleSortChange}
                 >
@@ -181,14 +169,11 @@ export default () => {
                 </select>
               </div>
 
-              <div className="col-md-3 mt-3">
-                <label htmlFor="sortOrder" className="form-label">
-                  Sort Order
-                </label>
+              <div>
+                <label htmlFor="sortOrder">Sort Order</label>
                 <select
                   id="sortOrder"
                   name="sortOrder"
-                  className="form-select"
                   value={filters.sortOrder}
                   onChange={handleSortChange}
                 >
@@ -197,14 +182,11 @@ export default () => {
                 </select>
               </div>
 
-              <div className="col-md-3 mt-3">
-                <label htmlFor="limit" className="form-label">
-                  Items Per Page
-                </label>
+              <div>
+                <label htmlFor="limit">Items Per Page</label>
                 <select
                   id="limit"
                   name="limit"
-                  className="form-select"
                   value={filters.limit}
                   onChange={handleFilterChange}
                 >
@@ -215,13 +197,8 @@ export default () => {
                 </select>
               </div>
 
-              <div className="col-md-3 mt-3 d-flex align-items-end">
-                <button
-                  className="btn btn-outline-secondary me-2"
-                  onClick={resetFilters}
-                >
-                  Reset Filters
-                </button>
+              <div>
+                <button onClick={resetFilters}>Reset Filters</button>
               </div>
             </div>
           </div>
@@ -311,10 +288,6 @@ export default () => {
             </nav>
           </>
         )}
-      </div>
-
-      <div className="foot">
-        <Footer />
       </div>
     </>
   );
